@@ -5,3 +5,10 @@ from .models import *
 from .serializers import *
 
 
+@api_view(["GET"])
+def employee_by_position(request):
+    position = request.GET.get('position')
+    employee = Employee.objects.filter(position=position)
+    ser = EmployeeSerializer(employee, many=True)
+    return Response(ser.data)
+
