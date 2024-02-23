@@ -14,4 +14,9 @@ urlpatterns = [
     path('room_by_capacity/', room_by_capacity),
     path('room_by_departament/', room_by_departament),
     path('room_by_is_blank/', room_by_is_blank),
+    path('payment_by_summa/', payment_by_summa),
+    path('payment_by_service/', payment_by_service),
+    path('payment_by_datetime/', payment_by_datetime),
+    path('payment_by_patient_id/', payment_by_patient_id),
+    path('payment_by_category/', payment_by_category),
 ]

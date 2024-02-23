@@ -101,6 +101,52 @@ def room_by_is_blank(request):
     return Response(ser.data)
 
 
+@api_view(["GET"])
+def payment_by_summa(request):
+    summa = request.GET.get('summa')
+    payment = Payment.objects.filter(summa=summa)
+    ser = PaymentSerializer(payment, many=True)
+    return Response(ser.data)
+
+
+@api_view(["GET"])
+def payment_by_service(request):
+    service = request.GET.get('service')
+    payment = Payment.objects.filter(service=service)
+    ser = PaymentSerializer(payment, many=True)
+    return Response(ser.data)
+
+
+@api_view(["GET"])
+def payment_by_datetime(request):
+    datetime = request.GET.get('datetime')
+    payment = Payment.objects.filter(datetime=datetime)
+    ser = PaymentSerializer(payment, many=True)
+    return Response(ser.data)
+
+
+@api_view(["GET"])
+def payment_by_patient_id(request):
+    patient_id = request.GET.get('patient_id')
+    payment = Payment.objects.filter(patient_id=patient_id)
+    ser = PaymentSerializer(payment, many=True)
+    return Response(ser.data)
+
+
+@api_view(["GET"])
+def payment_by_category(request):
+    category = request.GET.get('category')
+    payment = Payment.objects.filter(category=category)
+    ser = PaymentSerializer(payment, many=True)
+    return Response(ser.data)
+
+
+
+
+
+
+
+
 
 
 

@@ -177,7 +177,7 @@ class Payment(models.Model):
         (1, 'Expenses')
     )
     category = models.IntegerField(default=0, choices=CATEGORY)
-    qr_code = models.ImageField(upload_to='qr_code_images/')
+    qr_code = models.ImageField(upload_to='qr_code_images/', null=True, blank=True)
 
     def save(self, *args, **kwargs):
         qr = qrcode.QRCode(
