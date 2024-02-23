@@ -13,7 +13,7 @@ class EmployeeAdmin(UserAdmin):
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
-        (_('Extra'), {'fields': ('phone_number',)}),
+        (_('Extra'), {'fields': ('phone_number', "slug",)}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
 
