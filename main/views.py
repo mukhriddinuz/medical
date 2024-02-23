@@ -56,7 +56,7 @@ def employee_by_speciality_id(request):
 @api_view(["GET"])
 def department_by_patient(request):
     department = request.GET.get('department')
-    patient = PatientIllness.objects.filter(department=department)
+    patient = PatientIllness.objects.filter(department=department, treatment_ended=None)
     ser = PatientIllnessSerializer(patient, many=True)
     return Response(ser.data)
 

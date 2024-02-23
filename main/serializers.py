@@ -52,6 +52,7 @@ class PatientSerializer(serializers.ModelSerializer):
 
 class PatientIllnessSerializer(serializers.ModelSerializer):
     class Meta:
+        depth = 1
         model = PatientIllness
         fields = "__all__"
 
