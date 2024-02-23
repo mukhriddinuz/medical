@@ -32,8 +32,8 @@ class User(AbstractUser):
         verbose_name = 'User'
         verbose_name_plural = 'Users'
 
-    def save_full(self, *args, **kwargs):
-        self.full_name = self.first_name + " " + self.last_name
+    def save(self, *args, **kwargs):
+        self.slug = self.first_name + "_" + self.last_name
         super().save(*args, **kwargs)
 
 

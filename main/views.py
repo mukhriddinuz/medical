@@ -95,10 +95,12 @@ def room_by_departament(request):
 
 @api_view(["GET"])
 def room_by_is_blank(request):
-    blank = request.GET.get('blank')
-    room = Room.objects.filter(blank=blank)
-    ser = RoomSerializer(room, many=True)
-    return Response(ser.data)
+    capacity = request.GET.get('capacity')
+    status = request.GET.get('status')
+    department = request.GET.get('department')
+    room = Room.objects.filter(capacity=capacity, status=status, department_id=department, number_of_blank__gt=0)
+    ser = RoomSerializer(room, many=True).data
+    return Response(ser)
 
 
 @api_view(["GET"])
