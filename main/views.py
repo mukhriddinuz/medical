@@ -65,7 +65,31 @@ def department_by_patient(request):
 def room_by_status(request):
     status = request.GET.get('status')
     room = Room.objects.filter(status=status)
-    ser = RoomSerializer(patient, many=True)
+    ser = RoomSerializer(room, many=True)
+    return Response(ser.data)
+
+
+@api_view(["GET"])
+def room_by_capacity(request):
+    capacity = request.GET.get('capacity')
+    room = Room.objects.filter(capacity=capacity)
+    ser = RoomSerializer(room, many=True)
+    return Response(ser.data)
+
+
+@api_view(["GET"])
+def room_by_departament(request):
+    departament = request.GET.get('departament')
+    room = Room.objects.filter(departament=departament)
+    ser = RoomSerializer(room, many=True)
+    return Response(ser.data)
+
+
+@api_view(["GET"])
+def room_by_is_blank(request):
+    blank = request.GET.get('blank')
+    room = Room.objects.filter(blank=blank)
+    ser = RoomSerializer(room, many=True)
     return Response(ser.data)
 
 
