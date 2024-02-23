@@ -6,6 +6,14 @@ from .serializers import *
 
 
 @api_view(["GET"])
+def user_full_name(request):
+    full_name = request.GET.get('full_name')
+    user = User.objects.filter(slug__icontains=full_name)
+    ser = UserSerializer(user, many=True)
+    return Response(ser.data)
+
+
+@api_view(["GET"])
 def employee_by_position(request):
     position = request.GET.get('position')
     employee = Employee.objects.filter(position=position)

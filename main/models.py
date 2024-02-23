@@ -25,11 +25,16 @@ class User(AbstractUser):
             code='Invalid number'
         )
     ])
+    slug = models.SlugField(max_length=255, null=True, blank=True)
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+
+    def save_full(self, *args, **kwargs):
+        self.full_name = self.first_name + " " + self.last_name
+        super().save(*args, **kwargs)
 
 
 class Employee(models.Model):
