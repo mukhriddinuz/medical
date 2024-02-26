@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, ListCreateAPIView, DestroyAPIView, UpdateAPIView
 from .models import *
 from .serializers import *
+from datetime import datetime
 
 
 @api_view(["GET"])
@@ -143,16 +144,76 @@ def payment_by_category(request):
     return Response(ser.data)
 
 
+@api_view(['GET'])
+def patient_by_patient_illness(request):
+    patient = request.GET.get('patient')
+    patient_illness = PatientIllness.objects.filter(patient_id=patient).order_by('-id')
+    ser = PatientSerializer(patient_illness, many=True)
+    return Response(ser.data)
 
 
+@api_view(['GET'])
+def operation_by_start_time(request):
+    start_date_str = request.GET.get('start_date')
+    start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+    operations = Operation.objects.filter(start_time__date=start_date)
+    ser = OperationSerializer(operations, many=True)
+    return Response(ser.data)
 
 
+@api_view(['GET'])
+def operation_by_employee(request):
+    employees = request.GET.getlist('employees')
+    operation = Operation.objects.filter(id__in=employees)
+    ser = OperationSerializer(operation, many=True)
+    return Response(ser.data)
 
 
+@api_view(['GET'])
+def operation_by_room(request):
+    room = request.GET.get('room')
+    current_time = datetime.now()
+    operation = Operation.objects.filter(room_id=room, start_time__gte=current_time)
+    ser = OperationSerializer(operation, many=True)
+    return Response(ser.data)
 
 
+@api_view(['GET'])
+def department_by_name(request):
+    department_name = request.GET.get('department_name')
+    department = Department.objects.filter(name__icontains=department_name)
+    ser = DepartmentSerializer(department, many=True)
+    return Response(ser.data)
 
 
+@api_view(['GET'])
+def equipment_by_name(request):
+    equipment_name = request.GET.get('equipment_name')
+    equipment = Equipment.objects.filter(name__icontains=equipment_name)
+    ser = EquipmentSerializer(equipment, many=True)
+    return Response(ser.data)
 
 
+@api_view(['GET'])
+def feedback_by_status(request):
+    status = request.GET.get('status')
+    feedback = FeedbackPatients.objects.filter(status=status).order_by('-id')
+    ser = FeedbackPatientsSerializer(feedback, many=True)
+    return Response(ser.data)
 
+
+@api_view(['GET'])
+def attendance_by_employee(request):
+    employee = request.GET.get('employee')
+    attendance = Attendance.objects.filter(employee_id=employee).order_by('-id')
+    ser = AttendanceSerializer(attendance, many=True)
+    return Response(ser.data)
+
+
+@api_view(['GET'])
+def attendance_by_date(request):
+    date = request.GET.get('date')
+    print(date)
+    attendance = Attendance.objects.filter(date=date).order_by('-id')
+    ser = AttendanceSerializer(attendance, many=True)
+    return Response(ser.data)
