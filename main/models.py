@@ -59,6 +59,13 @@ class Employee(models.Model):
     department = models.ForeignKey(to="Department", on_delete=models.PROTECT)
     bio = models.TextField()
 
+    def is_busy(self, start_time, end_time):
+        busy_doctors = Employee.objects.filter(
+            operation__start_time__lt=end_time,
+            operation__end_time__gt=start_time
+        )
+        return busy_doctors.exists()
+
     def __str__(self):
         return f"{self.user.first_name}"
 
@@ -76,6 +83,14 @@ class Room(models.Model):
     equipment = models.ManyToManyField(to="Equipment", blank=True)
     other_info = models.TextField()
     number_of_blank = models.IntegerField(null=True, blank=True)
+
+    def is_busy(self, start_time, end_time):
+        conflicting_operations = Operation.objects.filter(
+            room=self,
+            start_time__lt=end_time,
+            end_time__gt=start_time
+        )
+        return conflicting_operations.exists()
 
     def save(self, *args, **kwargs):
         if self.number_of_blank is None:
@@ -139,6 +154,10 @@ class Operation(models.Model):
     info = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+
+    def clean(self):
+        if self.room.is_busy(self.start_time, self.end_time):
+            raise ValidationError('Bu xonada operatsiya mavjud!')
 
     def __str__(self):
         return f"{self.patient.full_name} - {self.room.name}"
@@ -212,5 +231,5 @@ class Attendance(models.Model):
             raise ValidationError("Check-out time must be after check-in time.")
 
     def __str__(self):
-        return f"{self.employee.user.first_name} - {self.date}"
+        return f"{self.employee.user.first_name} - {self.date} {self.check_in} - {self.check_out}"
 

@@ -55,5 +55,4 @@ urlpatterns = [
     path('all-attendance/', AllAttendance.as_view()),
     path('edit-attendance/<int:pk>/', EditAttendance.as_view()),
     path('delete-attendance/<int:pk>/', DeleteAttendance.as_view()),
-
 ]
